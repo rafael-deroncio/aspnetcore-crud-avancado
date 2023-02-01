@@ -1,0 +1,7 @@
+.tabela-categoorias tr > th:last-child,
+.tabela-categoorias tr > td:last-child
+{
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
