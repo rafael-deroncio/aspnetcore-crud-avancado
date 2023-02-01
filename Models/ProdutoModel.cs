@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,7 +18,7 @@ namespace CRUDAvancado.Models
 
         public int Quantidade { get; set; }
 
-        [Column()]
+        [DefaultValue(0)]
         public DateTime? DataCadastro { get; set; }
 
         public DateTime DataUltimaAtualizacao { get; set; }
