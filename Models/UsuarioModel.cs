@@ -22,14 +22,12 @@ namespace CRUDAvancado.Models
         [MaxLength(128)]
         public string Email { get; set; }
 
-        [Required]
         [MaxLength(128)]
         public string Senha { get; set; }
 
         [ReadOnly(true)]
         public DateTime? DataCadastro { get; set; }
 
-        [Required]
         public DateTime DataUltimaAtualizacao { get; set; }
 
 

@@ -1,5 +1,5 @@
 @{
-    var action = ViewBag.Subtitulo as string ?? ViewContext.RouteData.Values["action"].ToString();
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
 }
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -9,8 +9,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="\lib\bootstrap5\dist\css\bootstrap.css">
+    <link rel="stylesheet" href="\lib\bootstrap-icons\font\bootstrap-icons.min.css">
     <link rel="stylesheet" href="\css\estilos.css">
-    <title>CRUD SQLite | @action</title>
+    <title>CRUD | @controller</title>
 </head>
 
 <body>
@@ -23,12 +24,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarMain">
                 <div class="navbar-nav ms-auto">
-                    <a class="nav-link @(action == "Index" ? "active" : "")" aria-current="page"
-                        asp-controller="Home" asp-action="Index">Home</a>
-                    <a class="nav-link @(action == "Categorias" ? "active" : "")" aria-current="page"
+                    
+                    <a class="nav-link @(controller == "Index" ? "active" : "")" aria-current="page" asp-controller="Home"
+                        asp-action="Index">Home</a>
+                    <a class="nav-link @(controller == "Categoria" ? "active" : "")" aria-current="page"
                         asp-controller="Categoria" asp-action="Index">Categorias</a>
-                    <a class="nav-link @(action == "Produtos" ? "active" : "")" aria-current="page"
+                    <a class="nav-link @(controller == "Produto" ? "active" : "")" aria-current="page"
                         asp-controller="Produto" asp-action="Index">Produtos</a>
+                    <a class="nav-link @(controller == "Cliente" ? "active" : "")" aria-current="page"
+                        asp-controller="Cliente" asp-action="Index">Clientes</a>
                 </div>
             </div>
         </div>

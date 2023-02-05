@@ -1,14 +1,12 @@
 @model IEnumerable<CategoriaModel>
 @{
-    bool? categoriaExiste = TempData.ContainsKey("existe") ? (bool)TempData["existe"] : null;  
-    bool? categoriaSalva = TempData.ContainsKey("salvou") ? (bool)TempData["salvou"] : null;  
-    bool? categoriaExcluiu = TempData.ContainsKey("excluiu") ? (bool)TempData["excluiu"] : null;  
-
+    string subtitulo = ViewBag.Subtitulo as string;
 }
+
 
 <Header class="d-flex justify-content-between align-items-lg-center">
     <div>
-        <h1 class="text-primary">@ViewBag.Subtitulo</h1>
+        <h1 class="text-primary">@subtitulo</h1>
     </div>
     <div>
         <a asp-action="Cadastrar" class="btn btn-primary">Nova Categoria</a>
@@ -16,34 +14,7 @@
 </Header>
 <hr>
 
-@if (categoriaExcluiu.HasValue)
-{
-    if (categoriaExcluiu.Value)
-    {
-        <partial name="_MensagemSucesso" model="@("Categoria excluída com sucesso!")"></partial>
-    }
-    else
-    {
-        <partial name="_MensgemErro" model="@("Erro ao tentar excluir categoria")"></partial>
-    }
-}
-
-@if (categoriaSalva.HasValue)
-{
-    if (categoriaSalva.Value)
-    {
-        <partial name="_MensagemSucesso" model="@("Categoria salva com sucesso!")"></partial>
-    }
-    else
-    {
-        <partial name="_MensgemErro" model="@("Erro ao tentar salva categoria")"></partial>
-    }
-}
-
-@if (categoriaExiste.HasValue)
-{
-    <partial name="_MensgemErro" model="@("Categoria não encontrada ou não informada!")"></partial>
-}
+<partial name="_Mensagem"></partial>
 
 @if (Model.Count() > 0)
 {

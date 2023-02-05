@@ -14,9 +14,9 @@ namespace CrudAvancado.Controllers
     {
         private readonly DatabaseContext _databaseContext;
 
-        public ProdutoController(DatabaseContext DatabaseContext)
+        public ProdutoController(DatabaseContext databaseContext)
         {
-            _databaseContext = DatabaseContext;
+            _databaseContext = databaseContext;
         }
 
         public async Task<IActionResult> Index()
@@ -28,7 +28,7 @@ namespace CrudAvancado.Controllers
                 .AsNoTracking()
                 .ToListAsync();
 
-            produtos.ForEach(produto => 
+            produtos.ForEach(produto =>
             {
                 produto.Categoria = _databaseContext.Categorias.Find(produto.IdCategoria);
             });
@@ -75,6 +75,12 @@ namespace CrudAvancado.Controllers
 
                         _databaseContext.Update(produtoModel);
                     }
+
+                    TempData["mensagem"] = (await _databaseContext.SaveChangesAsync() > 0) ?
+                    MensagemModel.Serializar("Produto alterado com sucesso!") :
+                    MensagemModel.Serializar("Erro ao salvar produto.", TipoMensagem.Erro);
+
+                    return RedirectToAction("Index");
                 }
 
                 // ID not in route? Create
@@ -90,30 +96,30 @@ namespace CrudAvancado.Controllers
                     produtoModel.DataUltimaAtualizacao = DateTime.Now;
                     await _databaseContext.AddAsync(produtoModel);
                 }
-                
-                TempData["salvou"] = (await _databaseContext.SaveChangesAsync() > 0);
+
+                TempData["mensagem"] = (await _databaseContext.SaveChangesAsync() > 0) ?
+                MensagemModel.Serializar("Produto salvo com sucesso!") :
+                MensagemModel.Serializar("Erro ao alterar produto.", TipoMensagem.Erro);
+
                 return RedirectToAction("Index");
             }
-            // Modelo Nao Preenchido
-            else
-            {
-                return View(produto);
-            }
 
+            // Modelo Nao Preenchido
+            return View(produto);
         }
-    
+
         [HttpGet]
         public async Task<IActionResult> Excluir(int? id)
         {
-            ProdutoModel produtoModel = await _databaseContext.Produtos.FindAsync(id.Value);
+            ProdutoModel produto = await _databaseContext.Produtos.FindAsync(id.Value);
 
-            if (!id.HasValue | produtoModel == null)
+            if (!id.HasValue || produto == null)
             {
-                TempData["existe"] = false;
+                TempData["mensagem"] = MensagemModel.Serializar("Produto não encontrado!", TipoMensagem.Erro);
                 return RedirectToAction("Index");
             }
-            
-            return View(produtoModel);
+
+            return View(produto);
         }
 
         [HttpPost]
@@ -121,17 +127,12 @@ namespace CrudAvancado.Controllers
         {
             ProdutoModel produtoModel = await _databaseContext.Produtos.FindAsync(produto.IdProduto);
 
-            if (produtoModel != null)
-            {
-                _databaseContext.Remove(produtoModel);
-                 
-                TempData["excluiu"] = (await _databaseContext.SaveChangesAsync() > 0) ? true : false;
-            }
-            else
-            {
-                TempData["existe"] = false;
-            }
-            
+            if (produtoModel != null) _databaseContext.Remove(produtoModel);
+
+            TempData["mensagem"] = (await _databaseContext.SaveChangesAsync() > 0) ?
+            MensagemModel.Serializar("Produto excluido com sucesso!") :
+            MensagemModel.Serializar("Erro ao excluir produto.", TipoMensagem.Erro);
+
             return RedirectToAction("Index");
         }
     }

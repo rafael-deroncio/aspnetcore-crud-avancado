@@ -11,6 +11,7 @@ namespace CrudAvancado.Contexts
         public DbSet<ClienteModel> Clientes { get; set; }
         public DbSet<PedidoModel> Pedidos { get; set; }
         public DbSet<ItemPedidoModel> ItensPedido { get; set; }
+        
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -19,15 +20,15 @@ namespace CrudAvancado.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CategoriaModel>()
-                .Property(categoria => categoria.DataCadastro).HasDefaultValueSql("datetime('now', 'locatime', 'start of day')")
+                .Property(categoria => categoria.DataCadastro).HasDefaultValueSql("datetime('now', 'localtime', 'start of day')")
                 .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
             modelBuilder.Entity<ProdutoModel>()
-                .Property(produto => produto.DataCadastro).HasDefaultValueSql("datetime('now', 'locatime', 'start of day')")
+                .Property(produto => produto.DataCadastro).HasDefaultValueSql("datetime('now', 'localtime', 'start of day')")
                 .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
             modelBuilder.Entity<UsuarioModel>()
-                .Property(usuario => usuario.DataCadastro).HasDefaultValueSql("datetime('now', 'locatime', 'start of day')")
+                .Property(usuario => usuario.DataCadastro).HasDefaultValueSql("datetime('now', 'localtime', 'start of day')")
                 .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
             modelBuilder.Entity<ItemPedidoModel>()
@@ -48,7 +49,8 @@ namespace CrudAvancado.Contexts
                       {
                           endereco.WithOwner().HasForeignKey("IdUsuario");
                           endereco.HasKey("IdUsuario", "IdEndereco");
-                      });
+                      })
+                .Property(cliente => cliente.DataCadastro).HasDefaultValueSql("datetime('now', 'localtime', 'start of day')");
 
         }
     }

@@ -1,0 +1,62 @@
+@model IEnumerable<EnderecoModel>
+@{
+    var cliente = ViewBag.Cliente as ClienteModel;
+    ViewBag.Subtitulo = $"{ViewBag.Subtitulo}: <b>{cliente.Nome}</b>";
+}
+
+<Header class="d-flex justify-content-between align-items-lg-center">
+    <div>
+        <h1 class="text-primary">@Html.Raw(ViewBag.Subtitulo)</h1>
+    </div>
+    <div>
+        <a asp-action="Cadastrar" asp-route-cid="@cliente.IdUsuario" class="btn btn-primary">Novo Endereço</a>
+        <a asp-action="Index" asp-controller="Cliente" asp-route-cid="@cliente.IdUsuario" class="btn btn-secondary">Voltar</a>
+    </div>
+</Header>
+<hr>
+
+<partial name="_Mensagem"></partial>
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-striped tabela-clientes">
+        <thead>
+            <tr>
+                <th class="text-center">Logradouro</th>
+                <th class="text-center">Número</th>
+                <th class="text-center">Comp.</th>
+                <th class="text-center">Bairro</th>
+                <th class="text-center">Cidade</th>
+                <th class="text-center">UF</th>
+                <th class="text-center">CEP</th>
+                <th class="text-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var endereco in Model)
+            {
+                <tr>
+                    <td class="text-center">@endereco.Logradouro</td>
+                    <td class="text-center">@endereco.Numero</td>
+                    <td class="text-center">@endereco.Complemento</td>
+                    <td class="text-center">@endereco.Bairro</td>
+                    <td class="text-center">@endereco.Cidade</td>
+                    <td class="text-center">@endereco.Estado</td>
+                    <td class="text-center">@endereco.CEP</td>
+                    <td class="text-center">
+                        <a asp-action="Cadastrar" asp-route-cid="@cliente.IdUsuario" asp-route-eid="@endereco.IdEndereco" class="btn btn-sm btn-secondary">Alterar</a>
+                        <a asp-action="Excluir" asp-route-cid="@cliente.IdUsuario" asp-route-eid="@endereco.IdEndereco" class="btn btn-sm btn-danger">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Não há nenhuma endereço cadastrado. Para cadastrar <a asp-action="Cadastrar">clique aqui</a>.</p>
+}
+
+@section Scripts{
+<script src="/lib/dist/js/bootstrap.js"></script>
+}

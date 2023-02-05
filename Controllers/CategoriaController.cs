@@ -13,9 +13,9 @@ namespace CrudAvancado.Controllers
     {
         private readonly DatabaseContext _databaseContext;
 
-        public CategoriaController(DatabaseContext DatabaseContext)
+        public CategoriaController(DatabaseContext databaseContext)
         {
-            _databaseContext = DatabaseContext;
+            _databaseContext = databaseContext;
         }
 
         public async Task<IActionResult> Index()
@@ -64,6 +64,8 @@ namespace CrudAvancado.Controllers
                         categoriaModel.DataUltimaAtualizacao = DateTime.Now;
 
                         _databaseContext.Update(categoriaModel);
+
+                        TempData["mensagem"] = MensagemModel.Serializar($"Categoria alterada com sucesso!");
                     }
                 }
 
@@ -73,10 +75,12 @@ namespace CrudAvancado.Controllers
                     categoria.DataCadastro = DateTime.Now;
                     categoria.DataUltimaAtualizacao = DateTime.Now;
                     categoria.Ativo = true;
-                    await _databaseContext.AddAsync(categoria);    
+                    await _databaseContext.AddAsync(categoria);
                 }
-                
-                TempData["salvou"] = (await _databaseContext.SaveChangesAsync() > 0);
+
+                if (await _databaseContext.SaveChangesAsync() > 0)
+                    TempData["mensagem"] = MensagemModel.Serializar($"Categoria salva com sucesso!");
+
                 return RedirectToAction("Index");
             }
             // Modelo Nao Preenchido
@@ -90,15 +94,14 @@ namespace CrudAvancado.Controllers
         [HttpGet]
         public async Task<IActionResult> Excluir(int? id)
         {
-            CategoriaModel categoriaModel = await _databaseContext.Categorias.FindAsync(id.Value);
+            CategoriaModel categoria = await _databaseContext.Categorias.FindAsync(id.Value);
 
-            if (!id.HasValue | categoriaModel == null)
+            if (!id.HasValue | categoria == null)
             {
-                TempData["existe"] = false;
                 return RedirectToAction("Index");
             }
-            
-            return View(categoriaModel);
+
+            return View(categoria);
         }
 
         [HttpPost]
@@ -106,18 +109,21 @@ namespace CrudAvancado.Controllers
         {
             CategoriaModel categoriaModel = await _databaseContext.Categorias.FindAsync(categoria.IdCategoria);
 
-            if (categoriaModel != null)
+            if (categoriaModel == null)
             {
-                _databaseContext.Remove(categoriaModel);
-                 
-                TempData["excluiu"] = (await _databaseContext.SaveChangesAsync() > 0) ? true : false;
+                TempData["mensagem"] = MensagemModel.Serializar("Categoria não encontrada.", tipo: TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
             }
             else
             {
-                TempData["existe"] = false;
+                _databaseContext.Remove(categoriaModel);
             }
-            
+
+            TempData["mensagem"] = (await _databaseContext.SaveChangesAsync() > 0) ?
+                MensagemModel.Serializar("Categoria excluida com sucesso!") :
+            MensagemModel.Serializar("Erro ao excluir categoria.", tipo: TipoMensagem.Erro);
+
             return RedirectToAction("Index");
         }
     }
-}   
+}

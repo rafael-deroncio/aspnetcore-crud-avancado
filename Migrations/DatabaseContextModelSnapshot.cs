@@ -28,7 +28,7 @@ namespace CRUDAvancado.Migrations
                     b.Property<DateTime?>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValueSql("datetime('now', 'locatime', 'start of day')");
+                        .HasDefaultValueSql("datetime('now', 'localtime', 'start of day')");
 
                     b.Property<DateTime>("DataUltimaAtualizacao")
                         .HasColumnType("TEXT");
@@ -98,7 +98,7 @@ namespace CRUDAvancado.Migrations
                     b.Property<DateTime?>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValueSql("datetime('now', 'locatime', 'start of day')");
+                        .HasDefaultValueSql("datetime('now', 'localtime', 'start of day')");
 
                     b.Property<DateTime>("DataUltimaAtualizacao")
                         .HasColumnType("TEXT");
@@ -133,7 +133,7 @@ namespace CRUDAvancado.Migrations
                     b.Property<DateTime?>("DataCadastro")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValueSql("datetime('now', 'locatime', 'start of day')");
+                        .HasDefaultValueSql("datetime('now', 'localtime', 'start of day')");
 
                     b.Property<DateTime>("DataUltimaAtualizacao")
                         .HasColumnType("TEXT");
@@ -149,7 +149,6 @@ namespace CRUDAvancado.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Senha")
-                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
