@@ -1,0 +1,55 @@
+@model IEnumerable<PedidoModel>
+@{
+    var cliente = ViewBag.Cliente as ClienteModel;
+    string subtitulo = $"Pedidos de <b>{cliente.Nome}</b>";
+}
+
+<Header class="d-flex justify-content-between align-items-lg-center">
+    <div>
+        <h1 class="text-primary">@Html.Raw(subtitulo)</h1>
+    </div>
+    <div>
+        <a asp-action="Cadastrar" asp-route-cid="@cliente.IdUsuario" class="btn btn-primary">Novo Pedido</a>
+    </div>
+</Header>
+<hr>
+
+<partial name="_Mensagem"></partial>
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-striped tabela-categoorias">
+        <thead>
+            <tr>
+                <th class="text-center">Pedido</th>
+                <th class="text-center">Data/Hora Pedido</th>
+                <th class="text-center">Valor Total</th>
+                <th class="text-center">Data/Hora Entrega</th>
+                <th class="text-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pedido in Model)
+            {
+                <tr>
+                    <td class="text-center">@pedido.IdPedido.ToString("D4")</td>
+                    <td class="text-center">@(pedido.DataPedido.HasValue ? pedido.DataPedido : "Em Aberto")</td>
+                    <td class="text-center">@pedido.ValorPedido.Value.ToString("C")</td>
+                    <td class="text-center">@(pedido.DataEntrega.HasValue ? pedido.DataEntrega : "Não Entregue")</td>
+                    <td class="text-center">
+                        <a asp-action="Index" asp-controller="ItemPedido" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-secondary">Itens</a>
+                        <a asp-action="Excluir" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-danger">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Não há nenhuma pedido cadastrado. Para cadastrar <a asp-action="Cadastrar">clique aqui</a>.</p>
+}
+
+@section Scripts{
+<script src="/lib/bootstrap5/dist/js/bootstrap.js"></script>
+}
