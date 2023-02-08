@@ -136,23 +136,23 @@ namespace CrudAvancado.Controllers
                 return RedirectToAction(nameof(Index), "Cliente");
             }
 
-            if (ItemPedidoExiste(pid: pid.Value, prod: prod.Value))
+            if (!ItemPedidoExiste(pid: pid.Value, prod: prod.Value))
             {
                 TempData["mensagem"] = MensagemModel.Serializar("Item de pedido nao localizado.", TipoMensagem.Erro);
                 return RedirectToAction(nameof(Index), "Cliente");
             }
 
-            ItemPedidoModel itemPedido = await _databaseContext.ItensPedido.FindAsync(pid.Value);
+            ItemPedidoModel itemPedido = await _databaseContext.ItensPedido.FindAsync(pid.Value, prod.Value);
 
-            _databaseContext.Entry(itemPedido).Reference(p => p.Pedido).Load();
+            _databaseContext.Entry(itemPedido).Reference(p => p.Produto).Load();
 
             return View(itemPedido);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Excluir(int ped, int prod)
+        public async Task<IActionResult> Excluir(int pid, int prod)
         {
-            ItemPedidoModel itemPedido = await _databaseContext.ItensPedido.FindAsync(ped, prod);
+            ItemPedidoModel itemPedido = await _databaseContext.ItensPedido.FindAsync(pid, prod);
 
             if (itemPedido != null)
             {
@@ -175,7 +175,7 @@ namespace CrudAvancado.Controllers
                 TempData["mensagem"] = MensagemModel.Serializar("Erro ao excluir item do pedido.", tipo: TipoMensagem.Erro);
             }
             
-            return RedirectToAction(nameof(Index), new { ped = ped });
+            return RedirectToAction(nameof(Index), new { pid = pid });
         }
 
         #region Métodos Privados
