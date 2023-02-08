@@ -55,7 +55,7 @@ namespace CrudAvancado.Controllers
                         .AsNoTracking().ToListAsync(),
                         "IdProduto", "NomePreco");
 
-                    if (prod.HasValue && ItemPedidoExiste(pid.Value, prod.Value))
+                    if (prod.HasValue && await ItemPedidoExiste(pid.Value, prod.Value))
                     {
                         ItemPedidoModel itemPedido = await _databaseContext.ItensPedido
                             .Include(i => i.Produto)
@@ -86,7 +86,7 @@ namespace CrudAvancado.Controllers
                     ProdutoModel produto = await _databaseContext.Produtos.FindAsync(itemPedido.IdProduto);
                     itemPedido.ValorUnitario = produto.Valor;
 
-                    if (ItemPedidoExiste(itemPedido.IdPedido, itemPedido.IdProduto))
+                    if (await ItemPedidoExiste(itemPedido.IdPedido, itemPedido.IdProduto))
                     {
                         _databaseContext.ItensPedido.Update(itemPedido);
 
@@ -136,7 +136,7 @@ namespace CrudAvancado.Controllers
                 return RedirectToAction(nameof(Index), "Cliente");
             }
 
-            if (!ItemPedidoExiste(pid: pid.Value, prod: prod.Value))
+            if (! await ItemPedidoExiste(pid: pid.Value, prod: prod.Value))
             {
                 TempData["mensagem"] = MensagemModel.Serializar("Item de pedido nao localizado.", TipoMensagem.Erro);
                 return RedirectToAction(nameof(Index), "Cliente");
@@ -179,9 +179,9 @@ namespace CrudAvancado.Controllers
         }
 
         #region Métodos Privados
-        private bool ItemPedidoExiste(int pid, int prod)
+        private async Task<bool> ItemPedidoExiste(int pid, int prod)
         {
-            return _databaseContext.ItensPedido.Any(i => i.IdPedido == pid && i.IdProduto == prod);
+            return await _databaseContext.ItensPedido.AnyAsync(i => i.IdPedido == pid && i.IdProduto == prod);
         }
 
         private async Task<bool> AtualizaValorPedido(ItemPedidoModel itemPedido)
@@ -191,7 +191,7 @@ namespace CrudAvancado.Controllers
                         .Where(i => i.IdPedido == itemPedido.IdPedido)
                         .Sum(x => x.ValorUnitario * x.Quantidade);
 
-            return true;
+            return !(pedido == null);
         }
         #endregion 
     }
