@@ -21,6 +21,8 @@ namespace CrudAvancado.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.Subtitulo = "Listagem de Produtos";
+
             List<ProdutoModel> produtos = await _databaseContext.Produtos
                 .OrderBy(x => x.IdProduto)
                 .AsNoTracking()
@@ -47,10 +49,12 @@ namespace CrudAvancado.Controllers
 
                 if (produtoModel != null)
                 {
+                    ViewBag.Subtitulo = "Alteração de Produto";
                     return View(produtoModel);
                 }
                 return NotFound();
             }
+            ViewBag.Subtitulo = "Cadastro de Produto";
             return View(new ProdutoModel());
         }
 
@@ -108,6 +112,8 @@ namespace CrudAvancado.Controllers
         [HttpGet]
         public async Task<IActionResult> Excluir(int? id)
         {
+            ViewBag.Subtitulo = "Excluir Produto";
+            
             ProdutoModel produto = await _databaseContext.Produtos.FindAsync(id.Value);
 
             if (!id.HasValue || produto == null)
