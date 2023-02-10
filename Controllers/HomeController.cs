@@ -21,13 +21,13 @@ namespace CrudAvancado
 
         public async Task<IActionResult> Index()
         {
-            var pedidos = await _databaseContext.Pedidos
+            List<PedidoModel> pedidos = await _databaseContext.Pedidos
                 .Where(p => !p.DataPedido.HasValue)
                 .Include(p => p.Cliente)
                 .OrderByDescending(p => p.IdPedido)
-                .AsNoTracking().ToArrayAsync();
+                .AsNoTracking().ToListAsync();
 
-            return View();
+            return View(pedidos);
         }
     }
 }

@@ -21,6 +21,13 @@
 .tabela-pedidos tr > th:last-child,
 .tabela-pedidos tr > td:last-child,
 
+.tabela-abertos tr > th:first-child,
+.tabela-abertos tr > td:first-child,
+.tabela-abertos tr > td:nth-child(3),
+.tabela-abertos tr > th:nth-child(3),
+.tabela-abertos tr > th:last-child,
+.tabela-abertos tr > td:last-child,
+
 .tabela-itens tr > th:last-child,
 .tabela-itens tr > td:last-child,
 .tabela-itens tr > td:nth-child(2),
