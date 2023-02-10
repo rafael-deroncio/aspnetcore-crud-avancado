@@ -20,6 +20,8 @@ namespace CrudAvancado.Controllers
 
         public async Task<IActionResult> Index(int? cid)
         {
+            ViewBag.Subtitulo = "Listagem de Endereços";
+
             if (cid.HasValue)
             {
                 var cliente = await _databaseContext.Clientes.FindAsync(cid.Value);
@@ -51,6 +53,7 @@ namespace CrudAvancado.Controllers
                         var endereco = cliente.Enderecos.FirstOrDefault(e => e.IdEndereco == eid);
                         if (endereco != null)
                         {
+                            ViewBag.Subtitulo = "Alteração de Endereço";
                             return View(endereco);
                         }
                         else
@@ -60,6 +63,7 @@ namespace CrudAvancado.Controllers
                     }
                     else
                     {
+                        ViewBag.Subtitulo = "Cadastro de Endereço";
                         return View(new EnderecoModel());
                     }
                 }
@@ -140,6 +144,8 @@ namespace CrudAvancado.Controllers
         [HttpGet]
         public async Task<IActionResult> Excluir(int? cid, int? eid)
         {
+            ViewBag.Subtitulo = "Excluir Endereço";
+
             if (!cid.HasValue)
             {
                 TempData["mensagem"] = MensagemModel.Serializar("Nenhum cliente foi informado", TipoMensagem.Erro);

@@ -1,11 +1,12 @@
 @model IEnumerable<EnderecoModel>
 @{
     var cliente = ViewBag.Cliente as ClienteModel;
+    var subtitulo = ViewBag.Subtitulo as string;
 }
 
 <Header class="d-flex justify-content-between align-items-lg-center">
     <div>
-        <h1 class="text-primary"></h1>
+        <h1 class="text-primary">@subtitulo</h1>
     </div>
     <div>
         <a asp-action="Cadastrar" asp-route-cid="@cliente.IdUsuario" class="btn btn-primary">Novo Endereço</a>
