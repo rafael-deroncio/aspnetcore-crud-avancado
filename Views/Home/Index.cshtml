@@ -1,8 +1,11 @@
 @model List<PedidoModel>
+@{
+    string subtitulo = ViewBag.Subtitulo as string;
+}
 
 <Header class="d-flex justify-content-between align-items-lg-center">
     <div>
-        <h1 class="text-primary">Sistema de Pedidos<h1>
+        <h1 class="text-primary">@subtitulo<h1>
     </div>
 </Header>
 <hr>
@@ -11,6 +14,7 @@
 
 @if (Model.Count() > 0)
 {
+    <h3 class="text-secondary">Pedidos Abertos</h3>
     <table class="table table-striped tabela-abertos">
         <thead>
             <tr>

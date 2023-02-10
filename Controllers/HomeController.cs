@@ -21,6 +21,8 @@ namespace CrudAvancado
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.Subtitulo = "Sistema de Pedidos";
+            
             List<PedidoModel> pedidos = await _databaseContext.Pedidos
                 .Where(p => !p.DataPedido.HasValue)
                 .Include(p => p.Cliente)
