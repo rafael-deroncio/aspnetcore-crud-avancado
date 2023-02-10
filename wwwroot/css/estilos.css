@@ -1,5 +1,34 @@
-.tabela-categoorias tr > th:last-child,
-.tabela-categoorias tr > td:last-child
+.tabela-categorias tr > th:last-child,
+.tabela-categorias tr > td:last-child
+
+.tabela-produtos tr > th:last-child,
+.tabela-produtos tr > td:last-child,
+.tabela-produtos tr > td:nth-child(3),
+.tabela-produtos tr > th:nth-child(3),
+.tabela-produtos tr > td:nth-child(4),
+.tabela-produtos tr > th:nth-child(4),
+
+.tabela-clientes tr > th:last-child,
+.tabela-clientes tr > td:last-child,
+.tabela-clientes tr > td:nth-child(3),
+.tabela-clientes tr > th:nth-child(3),
+.tabela-clientes tr > td:nth-child(4),
+.tabela-clientes tr > th:nth-child(4),
+
+.tabela-enderecos tr > th:last-child,
+.tabela-enderecos tr > td:last-child,
+
+.tabela-pedidos tr > th:last-child,
+.tabela-pedidos tr > td:last-child,
+
+.tabela-itens tr > th:last-child,
+.tabela-itens tr > td:last-child,
+.tabela-itens tr > td:nth-child(2),
+.tabela-itens tr > th:nth-child(2),
+.tabela-itens tr > td:nth-child(3),
+.tabela-itens tr > th:nth-child(3),
+.tabela-itens tr > td:nth-child(4),
+.tabela-itens tr > th:nth-child(4)
 {
     width: 1%;
     white-space: nowrap;

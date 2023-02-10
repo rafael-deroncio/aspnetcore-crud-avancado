@@ -19,7 +19,7 @@
 
 @if (Model.Count() > 0)
 {
-    <table class="table table-striped tabela-clientes">
+    <table class="table table-striped tabela-enderecos">
         <thead>
             <tr>
                 <th class="text-center">Logradouro</th>
@@ -54,7 +54,7 @@
 }
 else
 {
-    <p>Não há nenhuma endereço cadastrado. Para cadastrar <a asp-action="Cadastrar">clique aqui</a>.</p>
+    <p>Não há nenhuma endereço cadastrado. Para cadastrar <a asp-action="Cadastrar" asp-route-cid="@cliente.IdUsuario">clique aqui</a>.</p>
 }
 
 @section Scripts{

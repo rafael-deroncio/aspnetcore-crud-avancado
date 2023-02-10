@@ -131,24 +131,12 @@ namespace CrudAvancado.Controllers
                     MensagemModel.Serializar("Erro ao salvar endereço.", TipoMensagem.Erro);
                 }
 
-                return RedirectToAction(nameof(Index), "Endereco", new { cid = idUsuario });
+                return RedirectToAction(nameof(Index), "Endereco", new { cid = cliente.IdUsuario });
             }
 
             TempData["mensagem"] = MensagemModel.Serializar("Nenhum cliente foi encontrado.", TipoMensagem.Erro);
 
             return RedirectToAction(nameof(Index), "Cliente");
-        }
-
-        private bool EnderecoExiste(int idUsuario, int idEndereco)
-        {
-            return _databaseContext.Clientes.FirstOrDefault(cliente => cliente.IdUsuario == idUsuario)
-                                   .Enderecos.Any(endereco => endereco.IdEndereco == idEndereco);
-        }
-
-        private string ObterCepNormalizado(string cep)
-        {
-            string cepNormalizado = cep.Replace("-", "").Replace(".", "").Trim();
-            return cepNormalizado.Insert(5, "-");
         }
 
         [HttpGet]
@@ -208,5 +196,20 @@ namespace CrudAvancado.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+    
+    #region Metodos Privados
+        private bool EnderecoExiste(int idUsuario, int idEndereco)
+        {
+            return _databaseContext.Clientes.FirstOrDefault(cliente => cliente.IdUsuario == idUsuario)
+                                   .Enderecos.Any(endereco => endereco.IdEndereco == idEndereco);
+        }
+
+        private string ObterCepNormalizado(string cep)
+        {
+            string cepNormalizado = cep.Replace("-", "").Replace(".", "").Trim();
+            return cepNormalizado.Insert(5, "-");
+        }
+    #endregion
+
     }
 }
