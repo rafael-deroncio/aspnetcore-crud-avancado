@@ -59,10 +59,10 @@
                     {
                         <td class="text-center">
                             <a asp-action="Cadastrar" asp-route-pid="@item.Pedido.IdPedido" asp-route-prod="@item.Produto.IdProduto" class="btn btn-sm btn-outline-warning">
-                                Alterar
+                                <i class="bi-pencil" title="Alterar cliente"></i>
                             </a>
                             <a asp-action="Excluir" asp-route-pid="@item.Pedido.IdPedido" asp-route-prod="@item.Produto.IdProduto" class="btn btn-sm btn-outline-danger">
-                                Excluir
+                                <i class="bi-trash" title="Excluir cliente"></i>
                             </a>
                         </td>
                     }

@@ -39,25 +39,25 @@
                     <td class="text-center">
                         @if (pedido.DataPedido.HasValue)
                         {
-                            <span class="btn btn-sm btn-light">Fechar</span>
+                            <span class="btn btn-sm btn-light"><i class="bi-check-lg text-gray" title="Pedido já fechado"></i></span>
 
                             if (pedido.DataEntrega.HasValue)
                             {
-                                <span class="btn btn-sm btn-light">Entregar</span>
+                                <span class="btn btn-sm btn-light"><i class="bi-truck text-gray" title="Pedido já entregue"></i></span>
                             }
                             else
                             {
-                                <a asp-action="Entregar" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-success">Entregar</a>
+                                <a asp-action="Entregar" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-warning"><i class="bi-truck" title="Registrar entrega do pedido"></i></a>
                             }
                         }
                         else
                         {
-                            <a asp-action="Fechar" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-success">Fechar</a>
-                            <span class="btn btn-sm btn-light">Entregar</span>
+                            <a asp-action="Fechar" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-success"><i class="bi-check-lg" title="Fechar Pedido"></i></a>
+                            <span class="btn btn-sm btn-light"><i class="bi-truck text-gray" title="Feche o pedido antes de registrar a entrega"></i></span>
                         }
                         <a asp-action="Index" asp-controller="ItemPedido" asp-route-pid="@pedido.IdPedido"
-                            class="btn btn-sm btn-secondary">Itens</a>
-                        <a asp-action="Excluir" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-danger">Excluir</a>
+                            class="btn btn-sm btn-info"><i class="bi-list-check" title="Itens do pedido"></i></a>
+                        <a asp-action="Excluir" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-danger"><i class="bi-trash" title="Excluir pedido"></i></a>
                     </td>
                 </tr>
             }

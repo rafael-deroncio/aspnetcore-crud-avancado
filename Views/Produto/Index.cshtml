@@ -40,10 +40,10 @@
                     <td class="text-center">@(produto.DataUltimaAtualizacao.ToString())</td>
                     <td class="text-center">
                         <a asp-action="Cadastrar" asp-route-id="@produto.IdProduto" class="btn btn-sm btn-secondary">
-                            Alterar
+                            <i class="bi-pencil" title="Alterar cliente"></i>
                         </a>
                         <a asp-action="Excluir" asp-route-id="@produto.IdProduto" class="btn btn-sm btn-danger">
-                            Excluir
+                            <i class="bi-trash" title="Excluir cliente"></i>
                         </a>
                     </td>
                 </tr>

@@ -44,8 +44,8 @@
                     <td class="text-center">@endereco.Estado</td>
                     <td class="text-center">@endereco.CEP</td>
                     <td class="text-center">
-                        <a asp-action="Cadastrar" asp-route-cid="@cliente.IdUsuario" asp-route-eid="@endereco.IdEndereco" class="btn btn-sm btn-secondary">Alterar</a>
-                        <a asp-action="Excluir" asp-route-cid="@cliente.IdUsuario" asp-route-eid="@endereco.IdEndereco" class="btn btn-sm btn-danger">Excluir</a>
+                        <a asp-action="Cadastrar" asp-route-cid="@cliente.IdUsuario" asp-route-eid="@endereco.IdEndereco" class="btn btn-sm btn-secondary"><i class="bi-pencil" title="Alterar cliente"></i></a>
+                        <a asp-action="Excluir" asp-route-cid="@cliente.IdUsuario" asp-route-eid="@endereco.IdEndereco" class="btn btn-sm btn-danger"><i class="bi-trash" title="Excluir cliente"></i></a>
                     </td>
                 </tr>
             }
