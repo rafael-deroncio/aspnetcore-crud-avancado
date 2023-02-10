@@ -20,6 +20,8 @@ namespace CrudAvancado.Controllers
 
         public async Task<IActionResult> Index(int? cid)
         {
+            ViewBag.Subtitulo = "Listagem de Pedidos";
+
             if (cid.HasValue)
             {
                 ClienteModel cliente = await _databaseContext.Clientes.FindAsync(cid.Value);
@@ -53,6 +55,8 @@ namespace CrudAvancado.Controllers
         {
             if (cid.HasValue)
             {
+                ViewBag.Subtitulo = "Cadastro de Pedido";
+
                 ClienteModel cliente = await _databaseContext.Clientes.FindAsync(cid.Value);
 
                 if (cliente != null)
@@ -85,6 +89,8 @@ namespace CrudAvancado.Controllers
         [HttpGet]
         public async Task<IActionResult> Excluir(int? pid)
         {
+            ViewBag.Subtitulo = "Excluir Pedido";
+
             if (!pid.HasValue)
             {
                 TempData["mensagem"] = MensagemModel.Serializar("Pedido não informado.", TipoMensagem.Erro);
@@ -132,6 +138,8 @@ namespace CrudAvancado.Controllers
         [HttpGet]
         public async Task<IActionResult> Fechar(int? pid)
         {
+            ViewBag.Subtitulo = "Fechar Pedido";
+
             if (!pid.HasValue)
             {
                 TempData["mensagem"] = MensagemModel.Serializar("Pedido não informado.", TipoMensagem.Erro);
@@ -186,8 +194,11 @@ namespace CrudAvancado.Controllers
             return RedirectToAction(nameof(Index), "Cliente");
         }
 
+        [HttpGet]
         public async Task<IActionResult> Entregar(int? pid)
         {
+            ViewBag.Subtitulo = "Entregar Pedido";
+
             if (!pid.HasValue)
             {
                 TempData["mensagem"] = MensagemModel.Serializar("Pedido não informado.", TipoMensagem.Erro);

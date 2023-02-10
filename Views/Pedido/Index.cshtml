@@ -1,7 +1,7 @@
 @model IEnumerable<PedidoModel>
 @{
     var cliente = ViewBag.Cliente as ClienteModel;
-    string subtitulo = $"Pedidos de <b>{cliente.Nome}</b>";
+    string subtitulo = (ViewBag.Subtitulo as string) + $": <b>{cliente.Nome}</b>";
 }
 
 <Header class="d-flex justify-content-between align-items-lg-center">

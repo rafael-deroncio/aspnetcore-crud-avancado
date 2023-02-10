@@ -1,7 +1,10 @@
 @model PedidoModel
+@{
+    var subtitulo = ViewBag.Subtitulo as string;
+}
 
 <div class="container">
-    <h1 class="text-primary">CRUD - Excluir</h1>
+    <h1 class="text-primary">@subtitulo</h1>
     <hr>
     <h4>Deseja realmente exluir o pedido <span class="text-danger">@Model.IdPedido.ToString("D4")</span> ?</h4>
 

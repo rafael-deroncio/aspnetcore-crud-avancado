@@ -1,18 +1,17 @@
 @model CategoriaModel
 @{
-    var action = Context.Request.RouteValues.ContainsKey("id") ?
-    "Alteração de Categoria" :
-    "Cadastro de Categoria";
+    var subtitulo = ViewBag.Subtitulo as string;
+
     var statusList = new List<SelectListItem>() {
-new SelectListItem {Value = "false", Text = "Inativo", Selected=false},
-new SelectListItem {Value = "true".ToString(), Text = "Ativo", Selected=true}
-};
+        new SelectListItem {Value = "false", Text = "Inativo", Selected=false},
+        new SelectListItem {Value = "true".ToString(), Text = "Ativo", Selected=true}
+        };
 }
 
 
 <Header class="d-flex justify-content-between align-items-lg-center">
     <div>
-        <h1 class="text-primary">@action</h1>
+        <h1 class="text-primary">@subtitulo</h1>
     </div>
 </Header>
 <hr>
