@@ -1,0 +1,61 @@
+@model PedidoModel
+
+<div class="container">
+    <h1 class="text-primary">CRUD - Fechar</h1>
+    <hr>
+    <h4>Deseja realmente fechar o pedido <span class="text-danger">@Model.IdPedido.ToString("D4")</span> ?</h4>
+
+    <hr>
+
+    <h6>Cliente: <b class="text-dark">@Model.Cliente.Nome</b></h6>
+    <hr>
+
+    @if (Model.ItensPedido.Count() > 0)
+    {
+        <h6><b>Itens do Pedido:<b></h6>
+        <hr>
+
+        @foreach (var item in Model.ItensPedido)
+        {
+            <h6>@item.Produto.Nome (@item.Quantidade x @item.ValorUnitario.ToString("C2") = @item.ValorItem.ToString("C2"))</h6>
+        }
+
+        <hr>
+
+        <h6><b>Valor Total do Pedido: @Model.ValorPedido.Value.ToString("C2")</b></h6>
+    }
+    else
+    {
+        <h6><b>Não há itens nesse pedido.</b></h6>
+    }
+
+    @if (Model.Cliente.Enderecos.Count() > 0)
+    {
+        <h4>Escolha o endereço de entrega:</h4>
+
+        <form asp-action="Entregar">
+            <input type="hidden" asp-for="@Model.IdPedido">
+
+            <div class="mt-3">
+                @foreach (var endereco in Model.Cliente.Enderecos)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="IdEndereco" value=@endereco.IdEndereco id='@($"opcao{endereco.IdEndereco}")' checked="@endereco.Selecionado">
+                        <label class="form-check-label" for='@($"opcao{endereco.IdEndereco}")'>
+                            @endereco.EnderecoCompleto
+                        </label>
+                    </div>
+                }
+                <hr>
+                <a asp-action="Index" asp-route-cid="@Model.IdCliente" class="btn btn-secondary">Cancelar</a>
+                <button class="btn btn-success" type="submit">Registrar Entrega</button>
+            </div>
+
+        </form>
+    }
+    else
+    {
+        <h6>Este cliente não possui endereços cadastrados. <a asp-controller="Endereco" asp-action="Cadastrar"
+            asp-route-cid="@Model.IdCliente">Cadastrar novo endereço.</a></h6>
+    }
+</div>

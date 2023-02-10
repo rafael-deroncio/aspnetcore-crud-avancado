@@ -176,10 +176,10 @@ namespace CrudAvancado.Controllers
             {
                 pedido.DataPedido = DateTime.Now;
 
-                foreach(var item in pedido.ItensPedido)
-                    item.Produto.Quantidade =- item.Quantidade;
+                foreach (var item in pedido.ItensPedido)
+                    item.Produto.Quantidade = -item.Quantidade;
 
-                TempData["mensagem"] = await _databaseContext.SaveChangesAsync() > 0 ? 
+                TempData["mensagem"] = await _databaseContext.SaveChangesAsync() > 0 ?
                     MensagemModel.Serializar("Pedido fechado com sucesso!") :
                     MensagemModel.Serializar("Erro ao fechar pedido.", TipoMensagem.Erro);
 
@@ -188,6 +188,65 @@ namespace CrudAvancado.Controllers
 
             TempData["mensagem"] = MensagemModel.Serializar("Erro ao fechar pedido.", tipo: TipoMensagem.Erro);
             return RedirectToAction(nameof(Index), "Cliente");
+        }
+
+        public async Task<IActionResult> Entregar(int? pid)
+        {
+            if (!pid.HasValue)
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Pedido não informado.", TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!await PedidoExiste(pid.Value))
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Pedido não encontrado.", TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
+
+            PedidoModel pedido = await _databaseContext.Pedidos
+                .Include(c => c.Cliente)
+                .ThenInclude(e => e.Enderecos)
+                .Include(i => i.ItensPedido)
+                .ThenInclude(p => p.Produto)
+                .FirstOrDefaultAsync(p => p.IdPedido == pid.Value);
+
+            return View(pedido);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Entregar(int idPedido, int idEndereco)
+        {
+            PedidoModel pedido = await _databaseContext.Pedidos
+                .Include(c => c.Cliente)
+                .ThenInclude(e => e.Enderecos)
+                .FirstOrDefaultAsync(p => p.IdPedido == idPedido);
+
+            EnderecoModel endereco = pedido.Cliente.Enderecos.FirstOrDefault(e => e.IdEndereco == idEndereco);
+
+            if (pedido == null)
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Pedido não encontrada.", tipo: TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index), new { cid = pedido.Cliente.IdUsuario });
+            }
+
+            if (endereco == null)
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Endereço não encontrada.", tipo: TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index), new { cid = pedido.Cliente.IdUsuario });
+            }
+
+            pedido.DataPedido = DateTime.Now;
+            pedido.DataEntrega = DateTime.Now;
+            pedido.EnderecoEntrega = endereco;
+
+            _databaseContext.Pedidos.Update(pedido);
+
+            TempData["mensagem"] = await _databaseContext.SaveChangesAsync() > 0 ?
+                MensagemModel.Serializar("Entrega registrada com sucesso!") :
+                MensagemModel.Serializar("Erro ao registrar entrega do pedido.", TipoMensagem.Erro);
+
+            return RedirectToAction(nameof(Index), new { cid = pedido.IdCliente });
         }
 
         #region Metodos Privados

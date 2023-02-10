@@ -37,7 +37,26 @@
                     <td class="text-center">@pedido.ValorPedido.Value.ToString("C")</td>
                     <td class="text-center">@(pedido.DataEntrega.HasValue ? pedido.DataEntrega : "Não Entregue")</td>
                     <td class="text-center">
-                        <a asp-action="Index" asp-controller="ItemPedido" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-secondary">Itens</a>
+                        @if (pedido.DataPedido.HasValue)
+                        {
+                            <span class="btn btn-sm btn-light">Fechar</span>
+
+                            if (pedido.DataEntrega.HasValue)
+                            {
+                                <span class="btn btn-sm btn-light">Entregar</span>
+                            }
+                            else
+                            {
+                                <a asp-action="Entregar" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-success">Entregar</a>
+                            }
+                        }
+                        else
+                        {
+                            <a asp-action="Fechar" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-success">Fechar</a>
+                            <span class="btn btn-sm btn-light">Entregar</span>
+                        }
+                        <a asp-action="Index" asp-controller="ItemPedido" asp-route-pid="@pedido.IdPedido"
+                            class="btn btn-sm btn-secondary">Itens</a>
                         <a asp-action="Excluir" asp-route-pid="@pedido.IdPedido" class="btn btn-sm btn-danger">Excluir</a>
                     </td>
                 </tr>
@@ -47,9 +66,9 @@
 }
 else
 {
-    <p>Não há nenhuma pedido cadastrado. Para cadastrar <a asp-action="Cadastrar" >clique aqui</a>.</p>
+    <p>Não há nenhuma pedido cadastrado. Para cadastrar <a asp-action="Cadastrar">clique aqui</a>.</p>
 }
 
 @section Scripts{
-<script src="/lib/bootstrap5/dist/js/bootstrap.js"></script>
+    <script src="/lib/bootstrap5/dist/js/bootstrap.js"></script>
 }
