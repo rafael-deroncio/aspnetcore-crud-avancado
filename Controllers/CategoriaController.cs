@@ -97,7 +97,7 @@ namespace CrudAvancado.Controllers
         [HttpGet]
         public async Task<IActionResult> Excluir(int? id)
         {
-            ViewBag.Subtitulo = "Cadastro de Categoria";
+            ViewBag.Subtitulo = "Excluir Categoria";
 
             CategoriaModel categoria = await _databaseContext.Categorias.FindAsync(id.Value);
 

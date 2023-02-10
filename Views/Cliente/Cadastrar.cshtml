@@ -1,18 +1,17 @@
 @model ClienteModel
 @{
-    var action = Context.Request.RouteValues.ContainsKey("id") ? 
-        "Alteração de Cliente":
-        "Cadastro de Cliente";
-    var statusList = new List<SelectListItem>() { 
+    var subtitulo = ViewBag.Subtitulo as string;
+
+    var statusList = new List<SelectListItem>() {
         new SelectListItem {Value = "0", Text = "Inativo"},
         new SelectListItem {Value = "1", Text = "Ativo"}
-        };
+};
 }
 
 
 <Header class="d-flex justify-content-between align-items-lg-center">
     <div>
-        <h1 class="text-primary">@action</h1>
+        <h1 class="text-primary">@subtitulo</h1>
     </div>
 </Header>
 <hr>
@@ -45,11 +44,11 @@
 
     @if (!Context.Request.RouteValues.ContainsKey("id"))
     {
-    <div class="form-group col-sm-8 col-lg-4">
-        <label asp-for="@Model.Senha">Senha: </label><br>
-        <input asp-for="@Model.Senha" class="form-control" type="password">
-        <span asp-validation-for="@Model.Senha" class="text-danger"></span>
-    </div>
+        <div class="form-group col-sm-8 col-lg-4">
+            <label asp-for="@Model.Senha">Senha: </label><br>
+            <input asp-for="@Model.Senha" class="form-control" type="password">
+            <span asp-validation-for="@Model.Senha" class="text-danger"></span>
+        </div>
     }
 
     <div class="mt-3">

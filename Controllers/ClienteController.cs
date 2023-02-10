@@ -20,6 +20,8 @@ namespace CrudAvancado.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.Subtitulo = "Listagem de Clientes";
+
             List<ClienteModel> clientes = await _databaseContext.Clientes
                 .OrderBy(x => x.IdUsuario)
                 .AsNoTracking()
@@ -32,12 +34,18 @@ namespace CrudAvancado.Controllers
         public async Task<IActionResult> Cadastrar(int? id)
         {
             if (!id.HasValue)
+            {
+                ViewBag.Subtitulo = "Cadastro de Cliente";
                 return View(new ClienteModel());
+            }
 
             ClienteModel cliente = await _databaseContext.Clientes.FindAsync(id);
 
             if (cliente != null)
+            {
+                ViewBag.Subtitulo = "Alteração de Cadastro";
                 return View(cliente);
+            }
 
             TempData["mensagem"] = MensagemModel.Serializar("Cliente não encontrado.", TipoMensagem.Erro);
             return RedirectToAction("Index");
@@ -89,6 +97,8 @@ namespace CrudAvancado.Controllers
         [HttpGet]
         public async Task<IActionResult> Excluir(int? id)
         {
+            ViewBag.Subtitulo = "Excluir Cliente";
+
             ClienteModel cliente = await _databaseContext.Clientes.FindAsync(id.Value);
 
             if (cliente != null)
