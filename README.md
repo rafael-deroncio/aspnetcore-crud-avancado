@@ -45,7 +45,9 @@ ___
 ## Funcionalidades
 
 - Listar, Cadastrar, Editar e Excluir registros de Produtos;
-- Listar, Cadastrar, Editar e Excluir registros de  Categorias de Produtos;
+- Listar, Cadastrar, Editar e Excluir registros de Categorias de Produtos;
+- Listar, Cadastrar, Editar e Excluir registros de Clientes;
+- Listar, Cadastrar, Editar e Excluir registros de Pedidos;
 
 ___
 
