@@ -1,5 +1,5 @@
 @{
-    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var controller = ViewContext.RouteData.Values["controller"].ToString();   
 }
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="\lib\bootstrap5\dist\css\bootstrap.css">
     <link rel="stylesheet" href="\lib\bootstrap-icons\font\bootstrap-icons.min.css">
     <link rel="stylesheet" href="\css\estilos.css">
-    <title>CRUD | @controller</title>
+    <partial name="_Titulo" model="@controller"></partial>
 </head>
 
 <body>

@@ -20,8 +20,6 @@ namespace CrudAvancado.Controllers
 
         public async Task<IActionResult> Index(int? cid)
         {
-            ViewBag.Subtitulo = "Listagem de Pedidos";
-
             if (cid.HasValue)
             {
                 ClienteModel cliente = await _databaseContext.Clientes.FindAsync(cid.Value);
@@ -53,8 +51,6 @@ namespace CrudAvancado.Controllers
         [HttpGet]
         public async Task<IActionResult> Cadastrar(int? cid)
         {
-            ViewBag.Subtitulo = "Listagem de Pedidos";
-
             if (cid.HasValue)
             {
                 ClienteModel cliente = await _databaseContext.Clientes.FindAsync(cid.Value);

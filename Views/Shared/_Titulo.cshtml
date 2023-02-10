@@ -1,0 +1,40 @@
+@{
+    string titulo;
+
+    switch (@Model)
+    {
+        case "Categoria":
+            titulo = "CRUD | Categorias";
+            break;
+
+        case "Cliente":
+            titulo = "CRUD | Clientes";
+            break;
+
+        case "Endereco":
+            titulo = "CRUD | Endereços";
+            break;
+
+        case "ItemPedido":
+            titulo = "CRUD | Itens Pedido";
+            break;
+
+        case "Pedido":
+            titulo = "CRUD | Pedido";
+            break;
+
+        case "Produto":
+            titulo = "CRUD | Produtos";
+            break;
+
+        case "Home":
+            titulo = "CRUD | Home";
+            break;
+
+        default:
+            titulo = ".::CRUD::.";
+        break;
+    }
+}
+
+<title>@titulo</title>

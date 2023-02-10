@@ -21,24 +21,24 @@
     <table class="table table-striped tabela-categorias">
         <thead>
             <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Categoria</th>
-                <th class="text-center">Data de Cadastro</th>
-                <th class="text-center">Data Última Alteração</th>
-                <th class="text-center">Status</th>
-                <th class="text-center">Ações</th>
+                <th>ID</th>
+                <th>Categoria</th>
+                <th>Data de Cadastro</th>
+                <th>Data Última Alteração</th>
+                <th>Status</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var categoria in Model)
             {
                 <tr>
-                    <td class="text-center">@categoria.IdCategoria</td>
-                    <td class="text-center">@categoria.Nome</td>
-                    <td class="text-center">@(categoria.DataCadastro.Value)</td>
-                    <td class="text-center">@(categoria.DataUltimaAtualizacao)</td>
-                    <td class="text-center">@(categoria.Ativo ? "Ativo" : "Inativo")</td>
-                    <td class="text-center">
+                    <td>@categoria.IdCategoria</td>
+                    <td>@categoria.Nome</td>
+                    <td>@(categoria.DataCadastro.Value)</td>
+                    <td>@(categoria.DataUltimaAtualizacao)</td>
+                    <td>@(categoria.Ativo ? "Ativo" : "Inativo")</td>
+                    <td>
                         <a asp-action="Cadastrar" asp-route-id="@categoria.IdCategoria" class="btn btn-sm btn-secondary">
                             <i class="bi-pencil" title="Alterar cliente"></i>
                         </a>

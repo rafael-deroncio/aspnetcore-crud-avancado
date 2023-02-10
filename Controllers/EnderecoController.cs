@@ -20,8 +20,6 @@ namespace CrudAvancado.Controllers
 
         public async Task<IActionResult> Index(int? cid)
         {
-            ViewBag.Subtitulo = "Listagem de Endereços";
-
             if (cid.HasValue)
             {
                 var cliente = await _databaseContext.Clientes.FindAsync(cid.Value);

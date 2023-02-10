@@ -20,8 +20,6 @@ namespace CrudAvancado.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Subtitulo = "Listagem de Clientes";
-
             List<ClienteModel> clientes = await _databaseContext.Clientes
                 .OrderBy(x => x.IdUsuario)
                 .AsNoTracking()
@@ -36,7 +34,6 @@ namespace CrudAvancado.Controllers
             if (!id.HasValue)
                 return View(new ClienteModel());
 
-            ViewBag.Subtitulo = "Listagem de Clientes";
             ClienteModel cliente = await _databaseContext.Clientes.FindAsync(id);
 
             if (cliente != null)

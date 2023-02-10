@@ -21,7 +21,7 @@ namespace CrudAvancado.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Subtitulo = "Listagem de Categorias";
-
+            
             List<CategoriaModel> categorias = await _databaseContext.Categorias
                 .OrderBy(x => x.IdCategoria)
                 .AsNoTracking()
@@ -35,7 +35,8 @@ namespace CrudAvancado.Controllers
         {
             if (id.HasValue)
             {
-                ViewBag.Subtitulo = "Listagem de Categorias";
+                ViewBag.Subtitulo = "Alteração de Categoria";
+
                 CategoriaModel categoriaModel = await _databaseContext.Categorias.FindAsync(id);
 
                 if (categoriaModel != null)
@@ -44,6 +45,8 @@ namespace CrudAvancado.Controllers
                 }
                 return NotFound();
             }
+            ViewBag.Subtitulo = "Cadastro de Categorias";
+
             return View(new CategoriaModel());
         }
 
@@ -94,6 +97,8 @@ namespace CrudAvancado.Controllers
         [HttpGet]
         public async Task<IActionResult> Excluir(int? id)
         {
+            ViewBag.Subtitulo = "Cadastro de Categoria";
+
             CategoriaModel categoria = await _databaseContext.Categorias.FindAsync(id.Value);
 
             if (!id.HasValue | categoria == null)
