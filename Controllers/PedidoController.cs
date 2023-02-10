@@ -28,7 +28,7 @@ namespace CrudAvancado.Controllers
 
                 if (cliente != null)
                 {
-                    var pedidos = _databaseContext.Pedidos
+                    IEnumerable<PedidoModel> pedidos = _databaseContext.Pedidos
                         .Where(p => p.IdCliente == cid.Value)
                         .OrderByDescending(x => x.Cliente)
                         .AsNoTracking().AsEnumerable();
@@ -82,30 +82,133 @@ namespace CrudAvancado.Controllers
                 TempData["menagem"] = MensagemModel.Serializar("Cliente não encontrado.", TipoMensagem.Erro);
                 return RedirectToAction(nameof(Index), "Cliente");
             }
-                TempData["menagem"] = MensagemModel.Serializar("Cliente não informado.", TipoMensagem.Erro);
-                return RedirectToAction(nameof(Index), "Cliente");
+            TempData["menagem"] = MensagemModel.Serializar("Cliente não informado.", TipoMensagem.Erro);
+            return RedirectToAction(nameof(Index), "Cliente");
         }
 
-        //     [HttpPost]
-        //     public async Task<IActionResult> Excluir(PedidoModel pedido)
-        //     {
-        //         PedidoModel pedidoModel = await _databaseContext.Pedidos.FindAsync(pedido.IdPedido);
+        [HttpGet]
+        public async Task<IActionResult> Excluir(int? pid)
+        {
+            if (!pid.HasValue)
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Pedido não informado.", TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
 
-        //         if (pedidoModel == null)
-        //         {
-        //             TempData["mensagem"] = MensagemModel.Serializar("Pedido não encontrada.", tipo: TipoMensagem.Erro);
-        //             return RedirectToAction(nameof(Index));
-        //         }
-        //         else
-        //         {
-        //             _databaseContext.Remove(pedidoModel);
-        //         }
+            if (!await PedidoExiste(pid.Value))
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Pedido não encontrado.", TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
 
-        //         TempData["mensagem"] = (await _databaseContext.SaveChangesAsync() > 0) ?
-        //             MensagemModel.Serializar("Pedido excluida com sucesso!") :
-        //         MensagemModel.Serializar("Erro ao excluir pedido.", tipo: TipoMensagem.Erro);
+            PedidoModel pedido = await _databaseContext.Pedidos
+                .Include(c => c.Cliente)
+                .Include(i => i.ItensPedido)
+                .ThenInclude(p => p.Produto)
+                .FirstOrDefaultAsync(p => p.IdPedido == pid.Value);
 
-        //         return RedirectToAction("Index");
-        //     }
+            return View(pedido);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Excluir(PedidoModel pedido)
+        {
+            PedidoModel pedidoModel = await _databaseContext.Pedidos.FindAsync(pedido.IdPedido);
+
+            if (pedidoModel == null)
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Pedido não encontrada.", tipo: TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
+
+            _databaseContext.Remove(pedidoModel);
+
+            if (await _databaseContext.SaveChangesAsync() > 0)
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Pedido excluida com sucesso!");
+                return RedirectToAction(nameof(Index), new { cid = pedido.IdCliente });
+            }
+
+            TempData["mensagem"] = MensagemModel.Serializar("Erro ao excluir pedido.", tipo: TipoMensagem.Erro);
+            return RedirectToAction(nameof(Index), "Cliente");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Fechar(int? pid)
+        {
+            if (!pid.HasValue)
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Pedido não informado.", TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!await PedidoExiste(pid.Value))
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Pedido não encontrado.", TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
+
+            PedidoModel pedido = await _databaseContext.Pedidos
+                .Include(c => c.Cliente)
+                .Include(i => i.ItensPedido)
+                .ThenInclude(p => p.Produto)
+                .FirstOrDefaultAsync(p => p.IdPedido == pid.Value);
+
+            return View(pedido);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Fechar(int idPedido)
+        {
+            PedidoModel pedido = await _databaseContext.Pedidos
+                .Include(c => c.Cliente)
+                .Include(i => i.ItensPedido)
+                .ThenInclude(p => p.Produto)
+                .FirstOrDefaultAsync(p => p.IdPedido == idPedido);
+
+            if (pedido == null)
+            {
+                TempData["mensagem"] = MensagemModel.Serializar("Pedido não encontrada.", tipo: TipoMensagem.Erro);
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (pedido.ItensPedido.Count() > 0)
+            {
+                pedido.DataPedido = DateTime.Now;
+
+                foreach(var item in pedido.ItensPedido)
+                    item.Produto.Quantidade =- item.Quantidade;
+
+                TempData["mensagem"] = await _databaseContext.SaveChangesAsync() > 0 ? 
+                    MensagemModel.Serializar("Pedido fechado com sucesso!") :
+                    MensagemModel.Serializar("Erro ao fechar pedido.", TipoMensagem.Erro);
+
+                return RedirectToAction(nameof(Index), new { cid = pedido.IdCliente });
+            }
+
+            TempData["mensagem"] = MensagemModel.Serializar("Erro ao fechar pedido.", tipo: TipoMensagem.Erro);
+            return RedirectToAction(nameof(Index), "Cliente");
+        }
+
+        #region Metodos Privados
+        private async Task<bool> PedidoExiste(int idPedido)
+        {
+            PedidoModel pedido = await _databaseContext.Pedidos.FindAsync(idPedido);
+            return !(pedido == null);
+        }
+
+        private async Task<bool> AtualizaValorPedido(ItemPedidoModel itemPedido)
+        {
+            PedidoModel pedido = await _databaseContext.Pedidos.FindAsync(itemPedido.IdPedido);
+            pedido.ValorPedido = _databaseContext.ItensPedido
+                        .Where(i => i.IdPedido == itemPedido.IdPedido)
+                        .Sum(x => x.ValorUnitario * x.Quantidade);
+
+            _databaseContext.Update(pedido);
+
+            return await _databaseContext.SaveChangesAsync() > 0;
+        }
+
+        #endregion
     }
 }

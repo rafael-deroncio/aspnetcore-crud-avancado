@@ -22,7 +22,7 @@
 @if (pedido.DataPedido.HasValue)
 {
     <h6>
-        Endereço de entrega: @pedido.EnderecoEntrega.EnderecoCompleto
+        Endereço de entrega: @(pedido.EnderecoEntrega == null ? "" : @pedido.EnderecoEntrega.EnderecoCompleto)
     </h6>
 }
 

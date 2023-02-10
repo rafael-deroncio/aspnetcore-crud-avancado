@@ -108,6 +108,9 @@ namespace CrudAvancado.Controllers
                         .Where(i => i.IdPedido == itemPedido.IdPedido)
                         .Sum(x => x.ValorUnitario * x.Quantidade);
 
+                    _databaseContext.Pedidos.Update(pedido);
+                    await _databaseContext.SaveChangesAsync();
+
                     return RedirectToAction(nameof(Index), "ItemPedido", new { pid = itemPedido.IdPedido });
                 }
                 else
@@ -136,7 +139,7 @@ namespace CrudAvancado.Controllers
                 return RedirectToAction(nameof(Index), "Cliente");
             }
 
-            if (! await ItemPedidoExiste(pid: pid.Value, prod: prod.Value))
+            if (!await ItemPedidoExiste(pid: pid.Value, prod: prod.Value))
             {
                 TempData["mensagem"] = MensagemModel.Serializar("Item de pedido nao localizado.", TipoMensagem.Erro);
                 return RedirectToAction(nameof(Index), "Cliente");
@@ -174,7 +177,7 @@ namespace CrudAvancado.Controllers
             {
                 TempData["mensagem"] = MensagemModel.Serializar("Erro ao excluir item do pedido.", tipo: TipoMensagem.Erro);
             }
-            
+
             return RedirectToAction(nameof(Index), new { pid = pid });
         }
 
@@ -191,7 +194,9 @@ namespace CrudAvancado.Controllers
                         .Where(i => i.IdPedido == itemPedido.IdPedido)
                         .Sum(x => x.ValorUnitario * x.Quantidade);
 
-            return !(pedido == null);
+            _databaseContext.Update(pedido);
+
+            return await _databaseContext.SaveChangesAsync() > 0;
         }
         #endregion 
     }
