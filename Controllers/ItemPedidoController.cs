@@ -23,6 +23,8 @@ namespace CrudAvancado.Controllers
         {
             if (pid.HasValue)
             {
+                ViewBag.Subtitulo = "Listagem de Itens do ";
+
                 if (_databaseContext.Pedidos.Any(p => p.IdPedido == pid.Value))
                 {
                     PedidoModel pedido = await _databaseContext.Pedidos
@@ -61,10 +63,14 @@ namespace CrudAvancado.Controllers
                             .Include(i => i.Produto)
                             .FirstOrDefaultAsync(i => i.IdPedido == pid && i.IdProduto == prod);
 
+                        ViewBag.Subtitulo = "Alterar Item do Pedido";
+
                         return View(itemPedido);
                     }
                     else
                     {
+                        ViewBag.Subtitulo = "Cadastrar Item no Pedido";
+
                         return View(new ItemPedidoModel()
                         { IdPedido = pid.Value, ValorUnitario = 0, Quantidade = 1 });
                     }
@@ -133,6 +139,8 @@ namespace CrudAvancado.Controllers
         [HttpGet]
         public async Task<IActionResult> Excluir(int? pid, int? prod)
         {
+            ViewBag.Subtitulo = "Excluir Item do Pedido";
+
             if (!pid.HasValue || !prod.HasValue)
             {
                 TempData["mensagem"] = MensagemModel.Serializar("Item de pedido nao informado.", TipoMensagem.Erro);

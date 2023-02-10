@@ -1,13 +1,16 @@
 @model ItemPedidoModel
+@{
+    string subtitulo = ViewBag.Subtitulo + $": {Model.IdPedido:D4}";
+};
 
 <div class="container">
-    <h1 class="text-primary">CRUD - Excluir</h1>
+    <h1 class="text-primary">@subtitulo</h1>
     <hr>
     <h4>Deseja realmente exluir o item de pedido <span class="text-danger">@Model.Produto.Nome</span> ?</h4>
     <form method="post" class="w-25">
         <input type="hidden" asp-for="@Model.IdPedido">
         <input type="hidden" asp-for="@Model.IdProduto">
-        
+
         <div class="mt-3">
             <a asp-action="Index" asp-route-pid="@Model.IdPedido" class="btn btn-success">Não</a>
             <button class="btn btn-danger" type="submit">Sim</button>

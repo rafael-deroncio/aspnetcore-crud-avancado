@@ -2,9 +2,7 @@
 @{
     bool alteracao = Context.Request.Query.ContainsKey("prod");
 
-    string subtitulo = alteracao ?
-    $"Alteração do Item do Pedido {Model.IdPedido:D4}" :
-    $"Cadastro de Item do Pedido {Model.IdPedido:D4}";
+    string subtitulo = ViewBag.Subtitulo + $": {Model.IdPedido:D4}";
 };
 
 
